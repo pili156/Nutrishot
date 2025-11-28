@@ -1,0 +1,23 @@
+# Ignore Conda Env
+conda-env/
+
+# Laravel
+/nutrishot/vendor/
+/nutrishot/node_modules/
+.env
+.env.*
+
+# Python
+/__pycache__/
+/nutri-pot/__pycache__/
+*.pyc
+
+# Docker
+*.log
+docker-data/
+
+# OS/Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

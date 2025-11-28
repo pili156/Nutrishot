@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  laravel:
+    build: ./nutrishot
+    container_name: nutrishot-app
+    volumes:
+      - ./nutrishot:/var/www
+    depends_on:
+      - pythonapi
+      - mysql
+    networks:
+      - appnet
+
+  pythonapi:
+    build: ./nutri-pot
+    container_name: nutri-pot-api
+    ports:
+      - "8000:8000"
+    networks:
+      - appnet
+
+  nginx:
+    image: nginx:alpine
+    container_name: nutrishot-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nutrishot:/var/www
+    depends_on:
+      - laravel
+    networks:
+      - appnet
+
+  mysql:
+    image: mysql:8.0
+    container_name: nutrishot-db
+    environment:
+      MYSQL_DATABASE: nutrishot
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker-data/mysql:/var/lib/mysql
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
